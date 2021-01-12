@@ -1,3 +1,44 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [安装部署](#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2)
+  - [编译安装](#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85)
+  - [预编译安装](#%E9%A2%84%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85)
+- [集群方案](#%E9%9B%86%E7%BE%A4%E6%96%B9%E6%A1%88)
+- [配置调优](#%E9%85%8D%E7%BD%AE%E8%B0%83%E4%BC%98)
+- [配置样例](#%E9%85%8D%E7%BD%AE%E6%A0%B7%E4%BE%8B)
+  - [https配置样例](#https%E9%85%8D%E7%BD%AE%E6%A0%B7%E4%BE%8B)
+    - [自签](#%E8%87%AA%E7%AD%BE)
+    - [开源](#%E5%BC%80%E6%BA%90)
+- [安全加固](#%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA)
+  - [普通用户运行](#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E8%BF%90%E8%A1%8C)
+  - [版本迭代更新](#%E7%89%88%E6%9C%AC%E8%BF%AD%E4%BB%A3%E6%9B%B4%E6%96%B0)
+  - [隐藏版本信息](#%E9%9A%90%E8%97%8F%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF)
+  - [隐藏目录禁止访问](#%E9%9A%90%E8%97%8F%E7%9B%AE%E5%BD%95%E7%A6%81%E6%AD%A2%E8%AE%BF%E9%97%AE)
+  - [剔除无用模块](#%E5%89%94%E9%99%A4%E6%97%A0%E7%94%A8%E6%A8%A1%E5%9D%97)
+  - [调整标识名称](#%E8%B0%83%E6%95%B4%E6%A0%87%E8%AF%86%E5%90%8D%E7%A7%B0)
+  - [隐藏不安全头](#%E9%9A%90%E8%97%8F%E4%B8%8D%E5%AE%89%E5%85%A8%E5%A4%B4)
+  - [配置ssl证书](#%E9%85%8D%E7%BD%AEssl%E8%AF%81%E4%B9%A6)
+  - [引用最新依赖](#%E5%BC%95%E7%94%A8%E6%9C%80%E6%96%B0%E4%BE%9D%E8%B5%96)
+  - [tls关闭gzip](#tls%E5%85%B3%E9%97%ADgzip)
+  - [降低XSS劫持](#%E9%99%8D%E4%BD%8Exss%E5%8A%AB%E6%8C%81)
+  - [配置Referrer-Policy](#%E9%85%8D%E7%BD%AEreferrer-policy)
+  - [配置X-Frame-Option](#%E9%85%8D%E7%BD%AEx-frame-option)
+  - [配置Feature-Policy](#%E9%85%8D%E7%BD%AEfeature-policy)
+  - [禁用不安全HTTP方法](#%E7%A6%81%E7%94%A8%E4%B8%8D%E5%AE%89%E5%85%A8http%E6%96%B9%E6%B3%95)
+  - [禁止缓存敏感数据](#%E7%A6%81%E6%AD%A2%E7%BC%93%E5%AD%98%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE)
+  - [防止缓冲区溢出攻击](#%E9%98%B2%E6%AD%A2%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%94%BB%E5%87%BB)
+- [模块使用](#%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8)
+  - [健康检测模块](#%E5%81%A5%E5%BA%B7%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9D%97)
+  - [waf功能使用](#waf%E5%8A%9F%E8%83%BD%E4%BD%BF%E7%94%A8)
+- [nginx原理分析](#nginx%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)
+  - [location匹配顺序](#location%E5%8C%B9%E9%85%8D%E9%A1%BA%E5%BA%8F)
+  - [http请求处理流程](#http%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B)
+- [TODO](#todo)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 - [安装部署](#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2)
   - [编译安装](#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85)
 - [集群方案](#%E9%9B%86%E7%BE%A4%E6%96%B9%E6%A1%88)
@@ -76,7 +117,7 @@
 
 > 4、安装nginx
 
-上传[安装包]()至目标服务器`/tmp`目录下，`root`执行：
+上传[安装包](https://github.com/weiliang-ms/nginx/archive/latest.tar.gz)至目标服务器`/tmp`目录下，`root`执行：
 
 
 	tar zxvf nginx-latest.tar.gz && cd nginx && sh install.sh && cd -
@@ -110,6 +151,23 @@
 检测配置
 
 	/opt/nginx/sbin/nginx -t
+	
+## 预编译安装
+
+> 下载预编译包
+
+根据操作系统选取对应版本
+
+- [nginx-1.18.0-neu.el6.x86_64.rpm](https://github.com/weiliang-ms/nginx/releases/download/latest/nginx-1.18.0-neu.el6.x86_64.rpm)
+- [nginx-1.18.0-neu.el7.x86_64.rpm](https://github.com/weiliang-ms/nginx/releases/download/latest/nginx-1.18.0-neu.el7.x86_64.rpm)
+
+> 上传安装
+
+    rpm -vih nginx-*-neu.el?.x86_64.rpm
+    
+> 启动
+
+    /opt/nginx/sbin/nginx
 
 # 集群方案
 
@@ -898,3 +956,11 @@ Feature Policy是一个新的http响应头属性，允许一个站点开启或�
 > 示例图
 
 ![request-flow.png](https://upload-images.jianshu.io/upload_images/1967881-0f25f669eea357c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+# TODO
+
+> 调整nginx目录
+
+> rpm支持普通用户
+
+> 更新依赖版本
