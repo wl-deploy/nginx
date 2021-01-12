@@ -1,6 +1,49 @@
-## 安装部署
+- [安装部署](#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2)
+  - [编译安装](#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85)
+- [集群方案](#%E9%9B%86%E7%BE%A4%E6%96%B9%E6%A1%88)
+- [配置调优](#%E9%85%8D%E7%BD%AE%E8%B0%83%E4%BC%98)
+- [配置样例](#%E9%85%8D%E7%BD%AE%E6%A0%B7%E4%BE%8B)
+  - [https配置样例](#https%E9%85%8D%E7%BD%AE%E6%A0%B7%E4%BE%8B)
+    - [自签](#%E8%87%AA%E7%AD%BE)
+    - [开源](#%E5%BC%80%E6%BA%90)
+- [安全加固](#%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA)
+  - [普通用户运行](#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E8%BF%90%E8%A1%8C)
+  - [版本迭代更新](#%E7%89%88%E6%9C%AC%E8%BF%AD%E4%BB%A3%E6%9B%B4%E6%96%B0)
+  - [隐藏版本信息](#%E9%9A%90%E8%97%8F%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF)
+  - [隐藏目录禁止访问](#%E9%9A%90%E8%97%8F%E7%9B%AE%E5%BD%95%E7%A6%81%E6%AD%A2%E8%AE%BF%E9%97%AE)
+  - [剔除无用模块](#%E5%89%94%E9%99%A4%E6%97%A0%E7%94%A8%E6%A8%A1%E5%9D%97)
+  - [调整标识名称](#%E8%B0%83%E6%95%B4%E6%A0%87%E8%AF%86%E5%90%8D%E7%A7%B0)
+  - [隐藏不安全头](#%E9%9A%90%E8%97%8F%E4%B8%8D%E5%AE%89%E5%85%A8%E5%A4%B4)
+  - [配置ssl证书](#%E9%85%8D%E7%BD%AEssl%E8%AF%81%E4%B9%A6)
+  - [引用最新依赖](#%E5%BC%95%E7%94%A8%E6%9C%80%E6%96%B0%E4%BE%9D%E8%B5%96)
+  - [tls关闭gzip](#tls%E5%85%B3%E9%97%ADgzip)
+  - [降低XSS劫持](#%E9%99%8D%E4%BD%8Exss%E5%8A%AB%E6%8C%81)
+  - [配置Referrer-Policy](#%E9%85%8D%E7%BD%AEreferrer-policy)
+  - [配置X-Frame-Option](#%E9%85%8D%E7%BD%AEx-frame-option)
+  - [配置Feature-Policy](#%E9%85%8D%E7%BD%AEfeature-policy)
+  - [禁用不安全HTTP方法](#%E7%A6%81%E7%94%A8%E4%B8%8D%E5%AE%89%E5%85%A8http%E6%96%B9%E6%B3%95)
+  - [禁止缓存敏感数据](#%E7%A6%81%E6%AD%A2%E7%BC%93%E5%AD%98%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE)
+  - [防止缓冲区溢出攻击](#%E9%98%B2%E6%AD%A2%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%94%BB%E5%87%BB)
+- [模块使用](#%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8)
+  - [健康检测模块](#%E5%81%A5%E5%BA%B7%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9D%97)
+  - [waf功能使用](#waf%E5%8A%9F%E8%83%BD%E4%BD%BF%E7%94%A8)
+- [nginx原理分析](#nginx%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)
+  - [location匹配顺序](#location%E5%8C%B9%E9%85%8D%E9%A1%BA%E5%BA%8F)
+  - [http请求处理流程](#http%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B)
 
-**适用于CentOS Red Hat**
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# 安装部署
+
+**适用平台**
+
+- CentOS
+
+- RedHat
+
+- 中标麒麟
+
+## 编译安装
 
 > 1、环境依赖
 
@@ -12,32 +55,31 @@
 
 - stream
 
-- ngx_cache_purge
+- [ngx_cache_purge](https://github.com/FRiCKLE/ngx_cache_purge)
 
-- headers-more-nginx
+- [headers-more-nginx](https://github.com/openresty/headers-more-nginx-module)
 
-- naxsi
+- [naxsi](https://github.com/nbs-system/naxsi)
 
 - nginx_upstream_check
 
-- lua-nginx
+- [LuaJIT](https://github.com/LuaJIT/LuaJIT)
 
-> 3、yum检测
+> 3、检测yum可用性
 
 尝试yum安装vim
 
 	yum install -y vim
 	echo $?
 
-若返回值为0，证明安装完成，如非0说明yum有问题，[yum配置方式参考](http://192.168.131.211:8888/press/deploy/linux/yum)
-
+若返回值为0，证明安装完成，如非0说明yum有问题，[yum配置方式参考](https://github.com/weiliang-ms/wl-awesome/blob/master/linux/package/yum.md)
 
 > 4、安装nginx
 
-上传[安装包](http://192.168.131.211:8888/download/deploy/soft/nginx/nginx-deploy-latest.tar.gz)至目标服务器/tmp目录下，root执行：
+上传[安装包]()至目标服务器`/tmp`目录下，`root`执行：
 
 
-	tar zxvf nginx-deploy-latest.tar.gz && cd nginx && sh install.sh && cd -
+	tar zxvf nginx-latest.tar.gz && cd nginx && sh install.sh && cd -
 
 
 **编译过程大约耗时5~10分钟**
@@ -69,7 +111,7 @@
 
 	/opt/nginx/sbin/nginx -t
 
-## 集群方案
+# 集群方案
 
 - keepalive软件 + 虚拟IP
 
@@ -158,7 +200,7 @@
 	service keepalived start
 	chkconfig keepalived on
 
-## 配置调优
+# 配置调优
 
 > upstream 配置 keepalive
 
@@ -180,6 +222,8 @@
 	}
 
 	#nginx upstream{}默认与上游服务以HTTP1.0进行通信，不具备keepalive能力
+
+# 配置样例
 	
 ## https配置样例
 
@@ -190,6 +234,8 @@
 - 自签
 
 - [第三方免费](https://letsencrypt.org/)
+
+### 自签
 
 > 1、自签证书
 
@@ -286,7 +332,9 @@
 	}
 
 
-> 2、免费ssl社区证书
+### 开源
+
+> 免费ssl社区证书
 
 [Let's encrypt](https://www.jianshu.com/p/0d455c7a9326)
 
@@ -296,23 +344,29 @@
 
 - 边界服务器（域名绑定的主机）可访问互联网
 
-> 3、基于IP签发ssl证书
+> 基于IP签发ssl证书
 
 [DVSSL](https://www.sslzhengshu.com/validation/ip-ssl.html)
 
-## 安全加固
+# 安全加固
 
 [参考开源项目](https://github.com/trimstray/nginx-admins-handbook#hardening)
 
-> 1、非root用户运行
+## 普通用户运行
+
+> 非root用户运行
 
 	nginx.conf -> user xxx;
 
-> 2、不间断的更新版本
+## 版本迭代更新
+
+> 不间断的更新版本
 
 由于新版本会解决旧版本Bug等，建议每次官方稳定版出来一周后进行nginx升级。
 
-> 3、隐藏版本信息
+## 隐藏版本信息
+
+> 隐藏版本信息
 
 `nginx.conf`中
 
@@ -322,7 +376,9 @@
 		...
 	}
 
-> 4、敏感文件禁止访问
+## 隐藏目录禁止访问
+
+> 敏感文件禁止访问
 
 **如.git .svn等**
 
@@ -334,13 +390,17 @@
 		...
 	}
 
-> 5、剔除无用模块
+## 剔除无用模块
+
+> 剔除无用模块
 
 **源码编译时剔除未使用的模块**
 
 	./configure --without-http_autoindex_module
+	
+## 调整标识名称
 
-> 6、修改nginx server标识
+> 修改nginx server标识
 
 [原因说明](https://www.troyhunt.com/shhh-dont-let-your-response-headers/)
 
@@ -352,7 +412,9 @@
 		...
 	}
 
-> 7、剔除不安全HEADER
+## 隐藏不安全头
+
+> 剔除不安全HEADER
 
 [参考地址](https://veggiespam.com/headers/)
 
@@ -364,11 +426,16 @@
 		proxy_pass http://backend-server;
 	}
 
-> 8、配置TLS
+## 配置ssl证书
 
-	https
+一般配置tls证书时需要用到以下配置
 
-> 9、使用最新版openssl
+	ssl_protocols TLSv1.2;
+	ssl_prefer_server_ciphers on;
+
+## 引用最新依赖
+
+> 使用最新版openssl
 
 [openssl项目地址](https://www.openssl.org/policies/releasestrat.html)
 
@@ -390,14 +457,7 @@
 
 - last minor version: 1.0.2s (May 28, 2018)
 
-
-> 10、https安全配置
-
-	#一般配置tls证书时需要用到以下配置
-	ssl_protocols TLSv1.2;
-	ssl_prefer_server_ciphers on;
-
-> 11、使用tls时关闭gzip
+## tls关闭gzip
 
 Some attacks are possible (e.g. the real BREACH attack is a complicated) because of gzip (HTTP compression not TLS compression) being enabled on SSL requests. 
 
@@ -405,13 +465,12 @@ In most cases, the best action is to simply disable gzip for SSL.
 
 	gzip off;
 
-> 12、降低XSS劫持配置
+## 降低XSS劫持
 
 	add_header Content-Security-Policy "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';" always;
 	add_header X-XSS-Protection "1; mode=block" always;
 
-> 13、配置Referrer-Policy
-
+## 配置Referrer-Policy
 
 [refer介绍](https://scotthelme.co.uk/a-new-security-header-referrer-policy/)
 	
@@ -432,11 +491,11 @@ http请求分为请求行，请求头以及请求体，而请求头又分为gene
 	"strict-origin-when-cross-origin",
 	"unsafe-url"                       #任何情况下都显示完整的referer
 
-> 14、配置X-Frame-Option
+## 配置X-Frame-Option
 
 	add_header X-Frame-Options "SAMEORIGIN" always;
 
-> 15、配置Feature-Policy
+## 配置Feature-Policy
 
 Feature Policy是一个新的http响应头属性，允许一个站点开启或者禁止一些浏览器属性和API，来更好的确保站点的安全性和隐私性。 可以严格的限制站点允许使用的属性是很愉快的，而可以对内嵌在站点中的iframe进行限制则更加增加了站点的安全性。
 
@@ -446,20 +505,18 @@ Feature Policy是一个新的http响应头属性，允许一个站点开启或�
 
 	add_header Feature-Policy "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'none'; payment 'none'; usb 'none';";
 
-> 16、禁用不安全HTTP方法
+## 禁用不安全HTTP方法
 
 	if ($request_method !~ ^(GET|POST|HEAD)$) {
-
   		return 405;
-
 	}
 
-> 17、禁止缓存敏感数据
+## 禁止缓存敏感数据
 
 	expires 0;
     add_header Cache-Control "no-cache, no-store";
 
-> 18、防止缓冲区溢出攻击
+## 防止缓冲区溢出攻击
 
 	client_max_body_size    100m;
 
@@ -469,7 +526,8 @@ Feature Policy是一个新的http响应头属性，允许一个站点开启或�
 
 	large_client_header_buffers 4 512k
 
-## 主动健康检测模块使用
+# 模块使用
+## 健康检测模块
 
 **目的：保证负载高可用**
 
@@ -554,6 +612,7 @@ Feature Policy是一个新的http响应头属性，允许一个站点开启或�
 	log_path="/opt/nginx/logs/"
 	open_logging=true
 
+# nginx原理分析
 ## location匹配顺序
 
 **例子来源以下地址**
@@ -762,12 +821,6 @@ Feature Policy是一个新的http响应头属性，允许一个站点开启或�
 <p>如果没有找到匹配请求URI的正则表达式位置，则选择先前存储的前缀位置来服务请求</p>
 </li>
 </ol>
-
-## nginx请求重定向
-
-**实现方式**
-
-`rewrite && return`
 
 ## http请求处理流程
 
