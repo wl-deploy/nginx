@@ -1,0 +1,21 @@
+# chkconfig:   2345 90 10
+# description:  Nginx is a delegate
+case "$1" in
+    start)
+        /opt/nginx/sbin/nginx -t
+		if [ $? -ne 0 ];then
+			echo "Check nginx config..."
+			exit 1	
+		else
+			/opt/nginx/sbin/nginx
+			ps -ef|grep nginx
+		fi
+        ;;
+    stop)
+		/opt/nginx/sbin/nginx -s stop
+		ps -ef|grep nginx
+        ;;
+    *)
+        echo "Please use start or stop as first argument"
+        ;;
+esac

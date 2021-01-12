@@ -1,0 +1,11 @@
+./configure --prefix=${ngx_dir}/nginx \
+              --with-stream \
+              --with-stream_ssl_preread_module --with-stream_ssl_module \
+              --with-http_stub_status_module --with-http_ssl_module \
+              --with-http_gzip_static_module --with-pcre \
+              --add-module=../ngx_cache_purge-2.3 \
+              --add-module=../echo-nginx-module-0.61 \
+              --add-module=../headers-more-nginx-module-master \
+              --add-module=../naxsi-0.56/naxsi_src \
+              --add-module=../nginx_upstream_check_module-master \
+              --add-module=../ngx-fancyindex-master
